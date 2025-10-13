@@ -6,6 +6,7 @@ interface Task {
   id: number;
   text: string;
   completed: boolean;
+  createdAt: string;
 }
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
         id: Date.now(),
         text: newTask.trim(),
         completed: false,
+        createdAt: new Date().toLocaleString(),
       };
       setTasks([...tasks, task]);
       setNewTask('');
@@ -75,7 +77,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Control Buttons */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
           <div className="flex gap-3 flex-wrap">
             <button
@@ -102,7 +103,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Tasks List */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             Tasks ({tasks.length})
@@ -153,7 +153,9 @@ export default function Home() {
                           : 'text-gray-900 dark:text-white'
                       }`}
                     >
-                      {task.text}
+                      {task.text} - {'['}
+                      {task.createdAt}
+                      {']'}
                     </span>
                     {selectedTaskId === task.id && (
                       <span className="text-blue-500 text-sm font-medium">
