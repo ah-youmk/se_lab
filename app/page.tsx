@@ -2,17 +2,20 @@
 
 import { useState } from 'react';
 
+type Category = 'Work' | 'Personal' | 'Shopping' | 'Others' | 'Home';
 interface Task {
   id: number;
   text: string;
   completed: boolean;
   createdAt: string;
+  category: Category;
 }
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState('');
   const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
+  const [category, setCategory] = useState<Category>('Work');
 
   const add_task = () => {
     if (newTask.trim() !== '') {
@@ -21,6 +24,7 @@ export default function Home() {
         text: newTask.trim(),
         completed: false,
         createdAt: new Date().toLocaleString(),
+        category: category,
       };
       setTasks([...tasks, task]);
       setNewTask('');
@@ -68,6 +72,16 @@ export default function Home() {
               placeholder="Enter a new task..."
               className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
             />
+            <select
+              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              onChange={(e) => setCategory(e.target.value as Category)}
+            >
+              <option value="Work">Work</option>
+              <option value="Personal">Personal</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Others">Others</option>
+              <option value="Home">Home</option>
+            </select>
             <button
               onClick={add_task}
               className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors font-medium"
@@ -153,7 +167,9 @@ export default function Home() {
                           : 'text-gray-900 dark:text-white'
                       }`}
                     >
-                      {task.text} - {'['}
+                      {'['}
+                      {task.category}
+                      {']'} {task.text} - {'['}
                       {task.createdAt}
                       {']'}
                     </span>
